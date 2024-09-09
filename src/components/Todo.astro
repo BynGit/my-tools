@@ -1,0 +1,162 @@
+---
+
+---
+
+<style>
+    .scrollBgAplications {
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+        &::-webkit-scrollbar-thumb {
+            @apply bg-gray-500 rounded-full;
+        }
+    }
+</style>
+
+<div
+    class="scrollBgAplications md:w-1/2 overflow-y-scroll p-3 max-h-[45vh] md:max-h-[70vh] lg:max-h-[70vh]"
+>
+    <div class="mx-auto p-4">
+        <h1 class="text-3xl font-bold text-blue-700">Mi Lista de Tareas</h1>
+
+        <div class="flex items-center mt-4">
+            <input
+                type="text"
+                class="inputAddTask border border-gray-300 rounded-md px-4 py-2 w-full text-blue-950"
+                placeholder="Agregar una tarea"
+            />
+            <input type="date" id="co"/>
+            <button
+                onclick="createTask()"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2"
+                >Agregar</button
+            >
+        </div>
+
+        <p class="container-error bg-blue-900 my-3 rounded-sm"></p>
+
+        <ul class="mt-4 containerTask"></ul>
+    </div>
+</div>
+
+<script is:inline>
+    const $ = (el) => document.querySelector(el);
+    const $$ = (el) => document.querySelectorAll(el);
+
+    let containerError = $(".container-error");
+    let inputAddTask = $(".inputAddTask");
+    let container = $(".containerTask");
+
+    var infoTODO = (atr) => localStorage.getItem(atr);
+
+    let structureInfoTODO = [
+        {
+            id: 0,
+            idElement: "",
+            msg: "",
+            date: "",
+            status: "",
+        },
+    ];
+
+    let statusTaskElement = {
+        Realizado: `<span class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Realizado</span>`,
+        Pendiente: `<span class="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Pendiente</span>`,
+    };
+
+    function generateRandomNumber() {
+        return Math.ceil(Math.random() * 9999) + 1;
+    }
+
+    function createTask() {
+        let dataList = JSON.parse(infoTODO("infoTODO"));
+
+        let numberId = generateRandomNumber();
+
+        while (dataList.some((x) => x.id == numberId)) {
+            numberId = generateRandomNumber();
+        }
+
+        dataList.push({
+            id: numberId,
+            idElement: `c${numberId}`,
+            msg: inputAddTask.value,
+            date: "hoy",
+            status: "Pendiente",
+        });
+
+        localStorage.setItem("infoTODO", JSON.stringify(dataList));
+
+        container.innerHTML = "";
+
+        loadingListTask(infoTODO("infoTODO"));
+        inputAddTask.value = "";
+    }
+
+    function deleteTask(id) {
+        console.log("click");
+
+        let dataList = JSON.parse(infoTODO("infoTODO"));
+
+        let positionTask = dataList.findIndex((x) => x.id == id);
+
+        console.log(positionTask);
+
+        dataList.splice(positionTask, 1);
+
+        localStorage.setItem("infoTODO", JSON.stringify(dataList));
+
+        container.innerHTML = "";
+
+        loadingListTask(infoTODO("infoTODO"));
+    }
+
+    function createElementTask({ id, idElement, msg, date, status }) {
+        let element = `     <li
+                    class="${id} flex justify-between items-center mb-2 p-2 hover:bg-slate-800 rounded-md hover:cursor-pointer"
+                >
+                    <div>
+                        <span class="text-3xl">${msg}</span>
+                        <p class="my-1">${statusTaskElement[status]} | <span  class="bg-indigo-100 text-indigo-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300">${date}</span></p>
+                    </div>
+
+                    <div>
+                        <button
+                            class="ml-auto bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 rounded"
+                            >✔</button
+                        >
+                        <button  id="${idElement}" onclick="deleteTask(${id})"
+                            class="${id}  ml-auto bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded"
+                            >🗑</button
+                        >
+                    </div>
+                </li>`;
+
+        // let container = document.querySelector(".containerTask")
+        container.innerHTML += element;
+    }
+
+    function loadingListTask(dataTODO) {
+        if (dataTODO) {
+            let info = JSON.parse(dataTODO);
+
+            info.map((datos) => {
+                if (datos.id != 0) {
+                    createElementTask(datos);
+                } else {
+                    containerError.textContent =
+                        "No tienes ninguna tarea pendiente... ";
+                    return;
+                }
+
+                containerError.textContent = "";
+            });
+        } else {
+            localStorage.setItem("infoTODO", JSON.stringify(structureInfoTODO));
+
+            containerError.textContent = "No tienes ninguna tarea pendiente...";
+        }
+    }
+
+    loadingListTask(infoTODO("infoTODO"));
+</script>
