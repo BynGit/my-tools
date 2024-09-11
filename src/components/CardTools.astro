@@ -1,0 +1,41 @@
+---
+interface Props {
+    id: Number;
+    img: string;
+
+    nameProject: string;
+    byDeveloper: string;
+
+    link: string;
+}
+
+const { img, id, byDeveloper, link, nameProject} = Astro.props;
+---
+
+<article id={"cardTool-" + id}
+    class="relative flex flex-col items-center justify-center w-full transition-all bg-[#121226]/50 border border-midu-primary/40 rounded-[20px] group overflow-hidden hover:scale-105 max-w-52"
+>
+    <div class="w-full p-[14px] rounded transition">
+        <figure class="flex items-center justify-center">
+            <img
+                class="object-cover w-full aspect-square rounded-[10px]"
+                src={img}
+                alt={"Logo - Project - " + nameProject}
+            /><img
+                class="absolute opacity-70 transform-gpu blur-lg -z-10 block object-cover w-full aspect-square transition bg-white rounded-[10px]"
+                src={img}
+                alt={"Logo - Project - " + nameProject}
+            />
+        </figure>
+        <header class="flex items-center justify-between mt-4 gap-x-2">
+            <h3 class="text-[16px] font-bold text-left text-white">
+                <a href={link} target="_blank" rel="external noopener nofollow"
+                    >{nameProject}</a
+                >
+            </h3>
+        </header>
+        <footer class="flex items-center justify-between gap-x-2">
+            <p class="text-xs text-left text-white/60">By: {byDeveloper}</p>
+        </footer>
+    </div>
+</article>
