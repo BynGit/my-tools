@@ -49,10 +49,10 @@ export let dataTools = [
     },
     {
         id: 6,
-        nameProject: 'Coming soon...',
-        byDeveloper: '...........',
-        img: '/logo-coming-soon.jpg',
-        link: '/'
+        nameProject: 'Generator Color',
+        byDeveloper: 'Dixon & Moe',
+        img: 'https://htmlcolorcodes.com/assets/images/html-color-codes-color-tutorials.jpg',
+        link: 'https://htmlcolorcodes.com/'
 
     },
     {

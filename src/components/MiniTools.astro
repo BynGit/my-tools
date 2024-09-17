@@ -1,0 +1,38 @@
+---
+
+// TODO: I have to improve the style.
+// TODO: Complete counter
+---
+
+<div class="w-full"
+    <h2 class="text-center">Mini Tools</h2>
+    <div class="flex justify-evenly items-center">
+        <div id="containerCounterWords">
+            <h3>Counter Words</h3>
+            <textarea  id="counterTextArea" class="text-black"/>
+            <!-- <b>Letters:</b> -->
+            <p>With Spaces: <span>0</span></p>
+            <p>Any Spaces: <span>0</span></p>
+        </div>
+
+        <div>
+
+            <h3>Generator Lorem</h3>
+
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+
+    const textArea = document.querySelector('#counterTextArea')
+
+    function changeCounterTextArea(e) { 
+        textArea.nextElementSibling.childNodes[1].textContent = e.target.value.length
+        textArea.nextElementSibling.nextElementSibling.childNodes[1].textContent = e.target.value.replace(/[\n\r]/g, '').split(' ').join('').length
+    }
+
+
+    textArea.addEventListener("input", changeCounterTextArea)
+
+</script>
