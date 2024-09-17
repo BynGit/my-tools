@@ -1,38 +1,52 @@
 ---
-
 // TODO: I have to improve the style.
 // TODO: Complete counter
 ---
 
-<div class="w-full"
-    <h2 class="text-center">Mini Tools</h2>
-    <div class="flex justify-evenly items-center">
-        <div id="containerCounterWords">
-            <h3>Counter Words</h3>
-            <textarea  id="counterTextArea" class="text-black"/>
-            <!-- <b>Letters:</b> -->
-            <p>With Spaces: <span>0</span></p>
-            <p>Any Spaces: <span>0</span></p>
+<h2 class="font-bold text-center text-3xl my-3">Mini Tools</h2>
+
+<div class="w-full flex flex-col lg:flex-row justify-evenly items-center">
+    <div id="containerCounterWords">
+        <h3 class="text-start font-bold">Counter Words / Letters</h3>
+
+        <div class="flex flex-col md:flex-row items-center">
+            <textarea cols="65"
+                id="counterTextArea"
+                class="my-3 bg-transparent border border-blue-400 w-full min-h-[200px] max-h-[400px] p-2 rounded-md focus:border-blue-800 focus:outline-0"
+                placeholder="Paste or write your text here..."></textarea>
+            <div class="p-3 w-full max-w-[200px]">
+                <span class="bg-blue-100 text-blue-800 font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">Letters:</span>
+                <p >With Spaces: <span class="elemWithSpaces">0</span></p>
+                <p>Any Spaces: <span class="elemAnySpaces">0</span></p>
+                <b class="bg-blue-100 text-blue-800 font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-100">Words:</b>
+              <p>Length Words: <span class="elemWords">0</span></p>  
+            </div>
         </div>
+    </div>
 
-        <div>
-
-            <h3>Generator Lorem</h3>
-
-        </div>
+    <div>
+        <h3>Generator Lorem</h3>
     </div>
 </div>
 
 <script is:inline>
+    const textArea = document.querySelector("#counterTextArea");
+    const elemWithSpaces = document.querySelector(".elemWithSpaces");
+    const elemAnySpaces = document.querySelector(".elemAnySpaces");
+    const elemWords = document.querySelector(".elemWords");
 
-    const textArea = document.querySelector('#counterTextArea')
-
-    function changeCounterTextArea(e) { 
-        textArea.nextElementSibling.childNodes[1].textContent = e.target.value.length
-        textArea.nextElementSibling.nextElementSibling.childNodes[1].textContent = e.target.value.replace(/[\n\r]/g, '').split(' ').join('').length
+    function changeCounterTextArea(e) {
+        elemWithSpaces.textContent = e.target.value.length;
+        elemAnySpaces.textContent = e.target.value
+            .replace(/[\n\r]/g, "")
+            .split(" ")
+            .join("").length;
+        elemWords.textContent = e.target.value
+            .replace(/[\n\r]/g, " ")
+            .split(" ")
+            .filter((x) => x !== "").length;
+        // console.log(e.target.value.replace(/[\n\r]/g, ' ').split(' ').filter(x => x !== ''))
     }
 
-
-    textArea.addEventListener("input", changeCounterTextArea)
-
+    textArea.addEventListener("input", changeCounterTextArea);
 </script>
