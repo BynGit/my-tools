@@ -39,28 +39,21 @@ export let dataTools = [
         link: 'https://tabler.io/icons'
 
     },
-    {
-        id: 5,
-        nameProject: 'Markdown',
-        byDeveloper: 'Matt Cone | Mexico',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-jQIGGgXonf8tGY2kmw3VtH-rXffnwyagNQ&s',
-        link: 'https://www.markdownguide.org/basic-syntax/'
 
-    },
     {
         id: 6,
         nameProject: 'Generator Color',
         byDeveloper: 'Dixon & Moe',
-        img: 'https://htmlcolorcodes.com/assets/images/html-color-codes-color-tutorials.jpg',
+        img: '/icon-croma-circle.jpeg',
         link: 'https://htmlcolorcodes.com/'
 
     },
     {
         id: 7,
-        nameProject: 'Coming soon...',
-        byDeveloper: '...........',
-        img: '/logo-coming-soon.jpg',
-        link: '/'
+        nameProject: 'Compress PDF',
+        byDeveloper: 'iLovePDF',
+        img: '/icon-error-loading-img.jpeg',
+        link: 'https://www.ilovepdf.com/es'
 
     },
 ]
