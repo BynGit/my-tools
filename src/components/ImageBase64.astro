@@ -1,13 +1,14 @@
 <div>
     <!-- <h3>Generator Lorem</h3> -->
 
-   
     <div class="flex flex-wrap justify-center items-center">
-      
         <div>
             <h3 class="font-bold text-start">Image to Base64</h3>
 
-            <label class="my-2 cursor-pointer block text-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 rounded" for="inputFileImg">+ Select Img</label>
+            <label
+                class="my-2 cursor-pointer block text-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 rounded"
+                for="inputFileImg">+ Select Img</label
+            >
             <input
                 id="inputFileImg"
                 type="file"
@@ -15,16 +16,22 @@
                 accept="image/*"
             />
 
-            <textarea id="containerTextBase64"  placeholder="data:image/jpeg;b..." class=" bg-transparent border border-blue-400 w-full min-h-[170px] max-h-[230px] p-2 rounded-md focus:border-blue-800 focus:outline-0"
-            cols="65"></textarea>
-            <button class="ml-auto cursor-pointer block w-full text-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded">📋 Copy to Clipboard</button>
+            <textarea
+                id="containerTextBase64"
+                placeholder="data:image/jpeg;b..."
+                class="bg-transparent border border-blue-400 w-full min-h-[170px] max-h-[230px] p-2 rounded-md focus:border-blue-800 focus:outline-0"
+                cols="65"></textarea>
+            <button id="btnCopyToClipBoard"
+                class="ml-auto cursor-pointer block w-full text-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded"
+                >📋 Copy to Clipboard</button
+            >
         </div>
 
         <div class="m-4">
-           <center class="m-1">
-             <i class="text-center">Preview Image</i>
-        </center>
-            <img id="imgBase64" src=""  class="max-w-[150px] rounded-md" />
+            <center class="m-1">
+                <i class="text-center">Preview Image</i>
+            </center>
+            <img id="imgBase64" src="" class="max-w-[150px] rounded-md" />
         </div>
     </div>
 </div>
@@ -33,31 +40,39 @@
     const inputFileImg = document.querySelector("#inputFileImg");
     const imgBase64 = document.querySelector("#imgBase64");
     const containerTextBase64 = document.querySelector("#containerTextBase64");
+    const btnCopyToClipBoard = document.querySelector("#btnCopyToClipBoard");
 
     function changeInputFileImg(e) {
         if (e.target.files[0]) {
             let reader = new FileReader();
             reader.onload = (e) => {
-          
-                imgBase64.src = e.target.result
-                containerTextBase64.value = e.target.result
-            }
+                imgBase64.src = e.target.result;
+                containerTextBase64.value = e.target.result;
+            };
 
             reader.readAsDataURL(e.target.files[0]);
         }
     }
 
     function changeTextArea() {
-        imgBase64.src = containerTextBase64.value
+        imgBase64.src = containerTextBase64.value;
     }
 
     function errorLoadingImg(params) {
+        imgBase64.src = "/icon-error-loading-img.jpeg";
+    }
 
-        imgBase64.src = '/icon-error-loading-img.jpeg'
-        
+    async function copyClipBoard() {
+        try {
+            await navigator.clipboard.writeText(containerTextBase64.value);
+            // console.log("Texto copiado al portapapeles");
+        } catch (err) {
+            // console.error("Error al copiar al portapapeles:", err);
+        }
     }
 
     inputFileImg.addEventListener("change", changeInputFileImg);
     containerTextBase64.addEventListener("input", changeTextArea);
     imgBase64.addEventListener("error", errorLoadingImg);
+    btnCopyToClipBoard.addEventListener("click", copyClipBoard);
 </script>
