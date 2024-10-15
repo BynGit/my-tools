@@ -6,32 +6,72 @@
 
 <script is:inline>
 
-const btnRecording = document.querySelector('#btnRecording')
+// const btnRecording = document.querySelector('#btnRecording')
+
+// btnRecording.addEventListener('click', async () => {
+//   const media = await navigator.mediaDevices.getDisplayMedia({
+//     video: { frameRate: { ideal: 30 } },
+    
+    
+//   })
+//   const mediarecorder = new MediaRecorder(media, {
+//     mimeType: 'video/webm;codecs=vp8,opus'
+//   })
+//   mediarecorder.start()
+
+//   const [video] = media.getVideoTracks()
+//   video.addEventListener("ended", () => {
+//     mediarecorder.stop()
+//   })
+
+//   mediarecorder.addEventListener("dataavailable", (e) => {
+//     const link = document.createElement("a")
+//     link.href = URL.createObjectURL(e.data)
+//     link.download = "captura.webm"
+//     link.click()
+//   })
+// })
+
+const btnRecording = document.querySelector('#btnRecording');
 
 btnRecording.addEventListener('click', async () => {
-  const media = await navigator.mediaDevices.getDisplayMedia({
-    video: { frameRate: { ideal: 30 } },
-    
-    
-  })
-  const mediarecorder = new MediaRecorder(media, {
-    mimeType: 'video/webm;codecs=vp8,opus'
-  })
-  mediarecorder.start()
+  try {
+    // Request access to both screen and microphone
+    const media = await navigator.mediaDevices.getDisplayMedia({
+      video: { frameRate: { ideal: 30 } },
+      audio: true // Include `audio: true` for system audio
+    });
 
-  const [video] = media.getVideoTracks()
-  video.addEventListener("ended", () => {
-    mediarecorder.stop()
-  })
+    const mediaRecorder = new MediaRecorder(media, {
+      mimeType: 'video/webm;codecs=vp8,opus' // Supports audio codec 'opus'
+      // video/mp4;codecs=h264,aac
+      // video/webm;codecs=vp8,opus
+    })
 
-  mediarecorder.addEventListener("dataavailable", (e) => {
-    const link = document.createElement("a")
-    link.href = URL.createObjectURL(e.data)
-    link.download = "captura.webm"
-    link.click()
-  })
-})
+    mediaRecorder.start();
 
+    const [video, audio] = media.getTracks();
+
+    // Add ended event listener to both video and audio tracks
+    video.addEventListener("ended", () => {
+      mediaRecorder.stop();
+    });
+
+    audio.addEventListener("ended", () => {
+      mediaRecorder.stop(); // Ensure recording stops when audio finishes
+    });
+
+    mediaRecorder.addEventListener("dataavailable", (e) => {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(e.data);
+      link.download = "captura.mp4";
+      link.click();
+    });
+  } catch (error) {
+    console.error("Error recording screen and audio:", error);
+    // Handle errors appropriately, like displaying an error message to the user
+  }
+});
 
     
 </script>
